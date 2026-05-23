@@ -5,9 +5,7 @@
 #include <SlotExpansion/CupsConfig.hpp>
 #include <MarioKartWii/RKNet/RKNetController.hpp>
 #include <MarioKartWii/RKSYS/RKSYSMgr.hpp>
-#include <Core/rvl/DWC/DWCAccount.hpp>
-
-//https://github.com/Retro-Rewind-Team/Pulsar/blob/development/PulsarEngine/Discord.cpp
+#include <core/rvl/DWC/DWCAccount.hpp>
 
 namespace Discord {
 
@@ -15,6 +13,10 @@ static bool hasWrittenClientID = false;
 static int frameCount = 0;
 static u64 startTimeStamp = 0;
 SectionId prevSectionId = SECTION_NONE;
+static CharacterId charID = CHARACTER_NONE;
+
+static char smallImageKey[32] = "";
+static char smallImageText[32] = "";
 
 // Removes 00 1A escapes from the BMG text
 void CleanBMGMessage(wchar_t* dest, const wchar_t* src) {
@@ -50,6 +52,8 @@ void DiscordRichPresence(Section* _this) {
     char* largeImageText = "";
     int minPlayers = 0;
     int maxPlayers = 0;
+	smallImageKey[0] = 0;
+    smallImageText[0] = 0;
 
     RKSYS::Mgr* rksysMgr = RKSYS::Mgr::sInstance;
     u32 vr = 0, br = 0;
@@ -96,6 +100,171 @@ void DiscordRichPresence(Section* _this) {
         RKNet::ControllerSub& sub = controller->subs[controller->currentSub];
         maxPlayers = 12;
         minPlayers = sub.playerCount;
+    }
+
+    // ACCESS THE CURRENT CHARACTER SELECTED
+    // ONLY ASSUME SELECTED ONCE IN A RACE
+    // 
+    // IT IS NOW ASSUMED THAT THE PLAYER IDX
+    // IS MADE AVAILABLE UNDER RACE DATA - NOT INFO
+
+    Racedata* raceData = Racedata::sInstance;
+    if(raceData && Raceinfo::sInstance && Raceinfo::sInstance->IsAtLeastStage(RACESTAGE_INTRO))
+    {
+        const RacedataPlayer& player = raceData->menusScenario.players[0];
+        charID = player.characterId;
+        
+        switch (charID)
+        {
+            case BABY_MARIO:
+                snprintf(smallImageKey, 32, "bmario");
+                snprintf(smallImageText, 32, "Baby Mario");
+                break;
+
+            case BABY_LUIGI:
+                snprintf(smallImageKey, 32, "bluigi");
+                snprintf(smallImageText, 32, "Baby Luigi");
+                break;
+
+            case BABY_PEACH:
+                snprintf(smallImageKey, 32, "bpeach");
+                snprintf(smallImageText, 32, "Baby Peach");
+                break;
+
+            case BABY_DAISY:
+                snprintf(smallImageKey, 32, "bdaisy");
+                snprintf(smallImageText, 32, "Baby Daisy");
+                break;
+
+            case TOAD:
+                snprintf(smallImageKey, 32, "toad");
+                snprintf(smallImageText, 32, "Toad");
+                break;
+
+            case TOADETTE:
+                snprintf(smallImageKey, 32, "toadette");
+                snprintf(smallImageText, 32, "Toadette");
+                break;
+
+            case KOOPA_TROOPA:
+                snprintf(smallImageKey, 32, "koopa_troopa");
+                snprintf(smallImageText, 32, "Koopa Troopa");
+                break;
+
+            case DRY_BONES:
+                snprintf(smallImageKey, 32, "dry_bones");
+                snprintf(smallImageText, 32, "Dry Bones");
+                break;
+
+            case MARIO:
+                snprintf(smallImageKey, 32, "mario");
+                snprintf(smallImageText, 32, "Mario");
+                break;
+                
+            case LUIGI:
+                snprintf(smallImageKey, 32, "luigi");
+                snprintf(smallImageText, 32, "Luigi");
+                break;
+
+            case PEACH:
+            case PEACH_BIKER:
+                snprintf(smallImageKey, 32, "peach");
+                snprintf(smallImageText, 32, "Peach");
+                break;
+
+            case DAISY:
+            case DAISY_BIKER:
+                snprintf(smallImageKey, 32, "daisy");
+                snprintf(smallImageText, 32, "Daisy");
+                break;
+
+            case YOSHI:
+                snprintf(smallImageKey, 32, "yoshi");
+                snprintf(smallImageText, 32, "Yoshi");
+                break;
+
+            case BIRDO:
+                snprintf(smallImageKey, 32, "birdo");
+                snprintf(smallImageText, 32, "Birdo");
+                break;
+
+            case DIDDY_KONG:
+                snprintf(smallImageKey, 32, "diddy");
+                snprintf(smallImageText, 32, "Diddy Kong");
+                break;
+
+            case BOWSER_JR:
+                snprintf(smallImageKey, 32, "bowser_jr");
+                snprintf(smallImageText, 32, "Bowser Jr");
+                break;
+
+            case WARIO:
+                snprintf(smallImageKey, 32, "wario");
+                snprintf(smallImageText, 32, "Wario");
+                break;
+
+            case WALUIGI:
+                snprintf(smallImageKey, 32, "waluigi");
+                snprintf(smallImageText, 32, "Waluigi");
+                break;
+
+            case DONKEY_KONG:
+                snprintf(smallImageKey, 32, "dk");
+                snprintf(smallImageText, 32, "Donkey Kong");
+                break;
+
+            case BOWSER:
+                snprintf(smallImageKey, 32, "bowser");
+                snprintf(smallImageText, 32, "Bowser");
+                break;
+
+            case KING_BOO:
+                snprintf(smallImageKey, 32, "king_boo");
+                snprintf(smallImageText, 32, "King Boo");
+                break;
+
+            case ROSALINA:
+            case ROSALINA_BIKER:
+                snprintf(smallImageKey, 32, "rosalina");
+                snprintf(smallImageText, 32, "Rosalina");
+                break;
+
+            case FUNKY_KONG:
+                snprintf(smallImageKey, 32, "funky");
+                snprintf(smallImageText, 32, "Funky Kong");
+                break;
+
+            case DRY_BOWSER:
+                snprintf(smallImageKey, 32, "dry_bowser");
+                snprintf(smallImageText, 32, "Dry Bowser");
+                break;
+
+            case MII_L_A_MALE:
+            case MII_L_A_FEMALE:
+            case MII_M_A_MALE:
+            case MII_M_A_FEMALE:
+            case MII_S_A_MALE:
+            case MII_S_A_FEMALE:
+                snprintf(smallImageKey, 32, "mii_a");
+                snprintf(smallImageText, 32, "Mii (Outfit A)");
+                break;
+
+            case MII_L_B_MALE:
+            case MII_L_B_FEMALE:
+            case MII_M_B_MALE:
+            case MII_M_B_FEMALE:
+            case MII_S_B_MALE:
+            case MII_S_B_FEMALE:
+                snprintf(smallImageKey, 32, "mii_b");
+                snprintf(smallImageText, 32, "Mii (Outfit B)");
+                break;
+
+        }
+    }
+
+    if (_this->sectionId != prevSectionId) {
+        Dolphin::GetSystemTime(startTimeStamp);
+        prevSectionId = _this->sectionId;
     }
 
     prevSectionId = _this->sectionId;
@@ -188,27 +357,27 @@ void DiscordRichPresence(Section* _this) {
             break;
         case SECTION_P1_WIFI_VS:
         case SECTION_P2_WIFI_VS:
-            details = "Racing a WiFi VS";
+            details = "Racing in a WiFi VS";
             break;
         case SECTION_P1_WIFI_BT:
         case SECTION_P2_WIFI_BT:
-            details = "Racing a WiFi Battle";
+            details = "Racing in a WiFi Battle";
             break;
         case SECTION_P1_WIFI_FRIEND_VS:
         case SECTION_P2_WIFI_FRIEND_VS:
-            details = "Racing a WiFi Friend VS";
+            details = "Racing in a WiFi Friend VS";
             break;
         case SECTION_P1_WIFI_FRIEND_TEAMVS:
         case SECTION_P2_WIFI_FRIEND_TEAMVS:
-            details = "Racing a WiFi Friend Team VS";
+            details = "Racing in a WiFi Friend Team VS";
             break;
         case SECTION_P1_WIFI_FRIEND_BALLOON:
         case SECTION_P2_WIFI_FRIEND_BALLOON:
-            details = "Racing a WiFi Friend Balloon Battle";
+            details = "Racing in a WiFi Friend Balloon Battle";
             break;
         case SECTION_P1_WIFI_FRIEND_COIN:
         case SECTION_P2_WIFI_FRIEND_COIN:
-            details = "Racing a WiFi Friend Coin Runners";
+            details = "Racing in a WiFi Friend Coin Runners";
             break;
         case SECTION_P1_WIFI_VS_LIVEVIEW:
         case SECTION_P2_WIFI_VS_LIVEVIEW:
@@ -234,15 +403,14 @@ void DiscordRichPresence(Section* _this) {
         state,
         "image_logo",
         largeImageText,
-        "",
-        "",
+        smallImageKey,
+        smallImageText,
         startTimeStamp,
         0,
         minPlayers,
-        maxPlayers
-    );
+        maxPlayers);
 }
 
 kmCall(0x80635540, DiscordRichPresence);
 
-} // namespace Discord
+}  // namespace Discord

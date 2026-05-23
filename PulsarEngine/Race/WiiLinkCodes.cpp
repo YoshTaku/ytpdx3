@@ -103,30 +103,27 @@ kmCall(0x807A1A54, AntiItemColCrash);
 //No Disconnect on Countdown by _tZ
 kmWrite32(0x80655578, 0x60000000);
 
-//Change VR Limit by XeR
-/* disable for testing
-kmWrite16(0x8052D286, 0x00007530);
-kmWrite16(0x8052D28E, 0x00007530);
-kmWrite16(0x8064F6DA, 0x00007530);
-kmWrite16(0x8064F6E6, 0x00007530);
-kmWrite16(0x8085654E, 0x00007530);
-kmWrite16(0x80856556, 0x00007530);
-kmWrite16(0x8085C23E, 0x00007530);
-kmWrite16(0x8085C246, 0x00007530);
-kmWrite16(0x8064F76A, 0x00007530);
-kmWrite16(0x8064F776, 0x00007530);
-kmWrite16(0x808565BA, 0x00007530);
-kmWrite16(0x808565C2, 0x00007530);
-kmWrite16(0x8085C322, 0x00007530);
-kmWrite16(0x8085C32A, 0x00007530);
-*/
+// Starting VR/BR
+kmWrite32(0x80548330, 0x38A003E8);
 
-//Allow WFC on Wiimmfi Patched ISOs
-kmWrite32(0x800EE3A0, 0x2C030000);
-kmWrite32(0x800ECAAC, 0x7C7E1B78);
+//VR/BR Limit Extension (32.500)
+kmWrite16(0x8052D286, 0x00007EF4);
+kmWrite16(0x8052D28E, 0x00007EF4);
+kmWrite16(0x8064F6DA, 0x00007EF4);
+kmWrite16(0x8064F6E6, 0x00007EF4);
+kmWrite16(0x8085654E, 0x00007EF4);
+kmWrite16(0x80856556, 0x00007EF4);
+kmWrite16(0x8085C23E, 0x00007EF4);
+kmWrite16(0x8085C246, 0x00007EF4);
+kmWrite16(0x8064F76A, 0x00007EF4);
+kmWrite16(0x8064F776, 0x00007EF4);
+kmWrite16(0x808565BA, 0x00007EF4);
+kmWrite16(0x808565C2, 0x00007EF4);
+kmWrite16(0x8085C322, 0x00007EF4);
+kmWrite16(0x8085C32A, 0x00007EF4);
 
-//VR System Changes by MrBean35000vr
-//Multiply VR difference by 2 by Winner
+//VR System Changes [MrBean35000vr]
+//Multiply VR difference by 2 [Winner]
 asmFunc GetVRScaleWin() {
     ASM(
   li r5, 2;
@@ -136,39 +133,43 @@ asmFunc GetVRScaleWin() {
 }
 kmCall(0x8052D150, GetVRScaleWin);
 
-//Cap VR loss from one victorious opponent between 0 and -8.
+//Cap VR loss from one victorious opponent between -2 and -6.
 asmFunc GetCapVRLoss() {
     ASM(
   lwz       r3, 0x14(r1);
-  cmpwi     r3, -8;
+  cmpwi     r3, -6;
   bge       0f;
-  li        r3, -8;
+  li        r3, -6;
   b         1f;
   0:;
-  cmpwi     r3, 0;
+  cmpwi     r3, -2;
   ble       1f;
-  li        r3, 0;
+  li        r3, -2;
   1:;
     )
 }
 kmCall(0x8052D260, GetCapVRLoss);
 
-//Cap VR gain from one defeated opponent between 2 and 12.
+//Cap VR gain from one defeated opponent between 5 and 15.
 asmFunc GetCapVRGain() {
     ASM(
    lwz       r3, 0x14(r1);
-   cmpwi     r3, 2;
+   cmpwi     r3, 5;
    bge       0f;
-   li        r3, 2;
+   li        r3, 5;
    b         1f;
    0:;
-   cmpwi     r3, 12;
+   cmpwi     r3, 15;
    ble       1f;
-   li        r3, 12;
+   li        r3, 15;
    1:;
     )
 }
 kmCall(0x8052D1B0, GetCapVRGain);
+
+//Allow WFC on Wiimmfi Patched ISOs
+kmWrite32(0x800EE3A0, 0x2C030000);
+kmWrite32(0x800ECAAC, 0x7C7E1B78);
 
 //Anti Lag Start by Ro
 extern "C" void sInstance__8Racedata(void*);

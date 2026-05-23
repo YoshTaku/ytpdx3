@@ -3,6 +3,7 @@
 #include <MarioKartWii/3D/Model/ModelDirector.hpp>
 #include <MarioKartWii/Kart/KartValues.hpp>
 #include <MarioKartWii/Kart/KartMovement.hpp>
+#include <MarioKartWii/Kart/KartPointers.hpp>
 #include <MarioKartWii/Item/Obj/ObjProperties.hpp>
 #include <Race/200ccParams.hpp>
 #include <PulsarSystem.hpp>
@@ -51,7 +52,7 @@ Kart::Stats* ApplySpeedModifier(KartId kartId, CharacterId characterId) {
     Item::blueShellMinimumDiveDistance = 640000.0f * factor;
     Item::blueShellHomingSpeed = 130.0f * factor;
 
-    Kart::hardSpeedCap = 120.0f * factor;
+	Kart::hardSpeedCap = 120.0f * factor; //Normally is 120.0
 	Kart::bulletSpeed = 145.0f * factor;
 	
 	if(System::sInstance->IsContext(PULSAR_MEGATC)){
@@ -59,7 +60,7 @@ Kart::Stats* ApplySpeedModifier(KartId kartId, CharacterId characterId) {
 	}
 	
     Kart::starSpeed = 105.0f * factor;
-    Kart::megaTCSpeed = 95.0f * factor;
+    Kart::megaTCSpeed = 90.0f * factor; //Normally is 95.0
 
     stats->baseSpeed *= factor;
     stats->standard_acceleration_as[0] *= factor;
