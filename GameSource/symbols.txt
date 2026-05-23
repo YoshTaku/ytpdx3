@@ -1947,6 +1947,7 @@ CreateFriendKey__3DWCFPCQ23DWC11AccUserData = 0x800ec6bc
 Update__8ElineMgrFv=0x8052d888
 UpdateFromPrevRace__16RacedataScenarioFv=0x8052f1e0
 
+#ytpdx
 WWFC_CUSTOM_REGION = 0x80005efc
 Real_DWCi_Auth_SendRequest = 0x800ed6ec
 NHTTPDestroyResponse__FPv = 0x801d92f8
@@ -1959,3 +1960,17 @@ GetPlayerCount__8RacedataFv = 0x8052dd30
 OpenAsync__3IOSFPCcQ23IOS4ModePFiPv_vPv = 0x801937e0
 IOCtlAsync__3IOSFiQ23IOS9IOCtlTypePviPviPFiPv_vPv = 0x80194158
 FPSPatchHook = 0x80001202
+WFCMainMenu = 0x8064b640
+WFCModeSelect = 0x8064bfd8
+GetNextPage = 0x8064d688
+OnRegionalButtonClick = 0x8064bdc4
+ActivateMushroom__Q24Kart8MovementFv = 0x8057f3d8
+
+#RetroRewindConditionalObjects
+GetArchive__10ArchiveMgrCF13ArchiveSourceUi = 0x80541614
+EnableScreen__13ModelDirectorFUi = 0x8055cce0
+DisableScreen__13ModelDirectorFUi = 0x8055ccf8
+GetScnManager__13ModelDirectorCFv = 0x8055f2c4
+BRRESExists__13ModelDirectorF13ArchiveSourcePCc = 0x8055ba00
+AppendScreenSpecificModelDirector__6ScnMgrFP13ModelDirector = 0x805635cc
+UpdateCollisions__Q24Kart6StatusFv = 0x80594bd4
