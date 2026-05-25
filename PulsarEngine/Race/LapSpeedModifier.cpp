@@ -1,12 +1,14 @@
 #include <kamek.hpp>
-#include <MarioKartWii/Race/Raceinfo/Raceinfo.hpp>
+#include <MarioKartWii/Race/RaceInfo/RaceInfo.hpp>
 #include <MarioKartWii/3D/Model/ModelDirector.hpp>
 #include <MarioKartWii/Kart/KartValues.hpp>
 #include <MarioKartWii/Kart/KartMovement.hpp>
-#include <MarioKartWii/Kart/KartPointers.hpp>
 #include <MarioKartWii/Item/Obj/ObjProperties.hpp>
+#include <MarioKartWii/RKNet/RKNetController.hpp>
+#include <MarioKartWii/File/StatsParam.hpp>
 #include <Race/200ccParams.hpp>
 #include <PulsarSystem.hpp>
+#include <MarioKartWii/File/RKG.hpp>
 
 namespace Pulsar {
 namespace Race {
@@ -43,6 +45,11 @@ Kart::Stats* ApplySpeedModifier(KartId kartId, CharacterId characterId) {
     speedModConv.kmpValue = (KMP::Manager::sInstance->stgiSection->holdersArray[0]->raw->speedMod << 16);
     if(speedModConv.speedMod == 0.0f) speedModConv.speedMod = 1.0f;
     float factor = System::sInstance->IsContext(PULSAR_200) ? speedFactor : 1.0f;
+	const GameMode gameMode = Racedata::sInstance->menusScenario.settings.gamemode;
+    const GameType gameType = Racedata::sInstance->menusScenario.settings.gametype;
+	if (gameType == GAMETYPE_ONLINE_SPECTATOR) {
+        factor = 1.0f;
+	}
     factor *= speedModConv.speedMod;
 
     Item::greenShellSpeed = 105.0f * factor;
